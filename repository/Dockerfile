@@ -1,0 +1,4 @@
+FROM mysql:latest
+ENV MYSQL_ROOT_PASSWORD=latteforte
+ENV MYSQL_DATABASE=assistente
+EXPOSE 3306

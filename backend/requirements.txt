@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+torch 
+openai 
+pydub
+llama-cpp-python
+ollama
