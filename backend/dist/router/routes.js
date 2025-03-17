@@ -19,9 +19,7 @@ routes.post('/auth/google', (req, res, next) => __awaiter(void 0, void 0, void 0
     const { access_token } = req.body;
     console.log(`Token: ${JSON.stringify(access_token)}`);
     const googleDriveService = new storage_1.default(access_token);
-    const file = yield googleDriveService.fetchFile();
-    const content = googleDriveService.extractTitleAndText(file);
-    googleDriveService.saveToFile(content);
+    yield googleDriveService.fetchFiles();
     res.json({});
 }));
 exports.default = routes;

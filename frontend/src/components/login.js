@@ -47,7 +47,7 @@ const Login = () => {
       }
     },
     onError: (error) => console.error('Login Failed:', error),
-    scope: 'openid email profile https://www.googleapis.com/auth/documents.readonly',
+    scope: 'openid email profile https://www.googleapis.com/auth/documents.readonly https://www.googleapis.com/auth/drive.readonly',
   });
   
   return (

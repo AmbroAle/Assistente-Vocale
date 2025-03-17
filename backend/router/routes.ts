@@ -7,9 +7,7 @@ routes.post('/auth/google', async(req : Request, res : Response, next : NextFunc
     const { access_token } = req.body;
     console.log(`Token: ${JSON.stringify(access_token)}`);
     const googleDriveService = new GoogleDriveService(access_token);
-    const file = await googleDriveService.fetchFile();
-    const content = googleDriveService.extractTitleAndText(file);
-    googleDriveService.saveToFile(content);
+    await googleDriveService.fetchFiles();
     res.json({});
 });
 

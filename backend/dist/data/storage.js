@@ -20,15 +20,14 @@ class GoogleDriveService {
         this.accessToken = accessToken;
         this.savePath = path_1.default.resolve('Assistente-Vocale', '../../ai/files', 'google_docs_output.json');
     }
-    fetchFile() {
+    fetchFiles() {
         return __awaiter(this, void 0, void 0, function* () {
-            const documentID = "12IlDSblRD_Q3uCgIse54mr5PHAj-02NTMI_Ko0qqWVo";
-            const url = `https://docs.googleapis.com/v1/documents/${documentID}`;
+            const url = "https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.document'&trashed=false";
             const response = yield (0, node_fetch_1.default)(url, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${this.accessToken}`,
-                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 }
             });
             if (!response.ok) {
@@ -38,27 +37,68 @@ class GoogleDriveService {
             }
             const data = yield response.json();
             console.log("contenuto da estrarre:", data);
+            const fileIds = data.files.map((file) => file.id);
+            console.log(fileIds);
+            const fileObjects = { files: fileIds.map(id => ({ id })) };
+            const allDocs = yield this.fetchAllDocumets(fileObjects);
+            const extractInfoDocs = this.extractTitleAndText(allDocs);
+            this.saveToFile(extractInfoDocs);
+        });
+    }
+    fetchAllDocumets(idFiles) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const documents = [];
+            for (const file of idFiles.files) {
+                const doc = yield this.fetchDocumentById(file.id);
+                documents.push(doc);
+            }
+            console.log("Documenti recuperati:", documents);
+            return documents;
+        });
+    }
+    fetchDocumentById(fileId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = `https://docs.googleapis.com/v1/documents/${fileId}`;
+            const response = yield (0, node_fetch_1.default)(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${this.accessToken}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                console.error(`Errore nel recupero del documento ${fileId}:`, yield response.json());
+                return null;
+            }
+            const data = yield response.json();
+            console.log(`Contenuto documento ${fileId}:`, data);
             return data;
         });
     }
-    extractTitleAndText(document) {
-        if (!document.body || !document.body.content) {
-            console.error("Errore: la risposta non contiene il campo 'body.content'");
-            return;
+    extractTitleAndText(documents) {
+        if (!documents || documents.length === 0) {
+            console.error("Errore: nessun documento da elaborare.");
+            return [];
         }
-        const title = document.title;
-        const text = document.body.content
-            .filter((item) => item.paragraph)
-            .map((item) => item.paragraph.elements)
-            .flat()
-            .filter((el) => el.textRun && el.textRun.content)
-            .map((el) => el.textRun.content.trim())
-            .join(' ');
-        return { title, text };
+        return documents.map((document) => {
+            if (!document.body || !document.body.content) {
+                console.error(`Errore: la risposta per il documento '${document.title}' non contiene il campo 'body.content'`);
+                return { title: document.title, text: '' };
+            }
+            const title = document.title;
+            const text = document.body.content
+                .filter((item) => item.paragraph)
+                .map((item) => item.paragraph.elements)
+                .flat()
+                .filter((el) => el.textRun && el.textRun.content)
+                .map((el) => el.textRun.content.trim())
+                .join(' ');
+            return { title, text };
+        });
     }
     saveToFile(data) {
         fs_1.default.writeFileSync(this.savePath, JSON.stringify(data, null, 2), 'utf-8');
-        console.log(`Documenti salvati in: ${this.savePath}`);
+        console.log(`Tutti i documenti sono stati salvati in: ${this.savePath}`);
     }
 }
 exports.default = GoogleDriveService;
