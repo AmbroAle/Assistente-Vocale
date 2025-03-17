@@ -39,6 +39,12 @@
   margin-top: 10px;
 }
 
+.loginButton {
+  border-radius: 15px;
+  padding: 5px;
+  background-color: white;
+}
+
 .logo {
   width: 2%;
 }

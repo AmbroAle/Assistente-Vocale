@@ -1,7 +1,9 @@
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
+  const navigate = useNavigate();
   const login = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async (response) => {
@@ -28,15 +30,18 @@ const Login = () => {
         if (!tokenResponse.ok) {
           const errorDetails = await tokenResponse.json();
           console.error('Errore nel ricevere il token:', errorDetails);
-        } else {
-          const tokenData = await tokenResponse.json();
-          console.log('Token:', tokenData);
-          const res = await fetch('http://localhost:8000/auth/google', {
+        } 
+        const tokenData = await tokenResponse.json();
+        console.log('Token:', tokenData);
+        const res = await fetch('http://localhost:8000/auth/google', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ access_token: tokenData.access_token }),
-          });
+        });
+        if (!res.ok) {
+          console.error("errore scambio token:",res);
         }
+        navigate("/dashboard");
       } catch (error) {
         console.log('Error exchanging code:', error.json());
       }
@@ -48,7 +53,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <h2>Login with Google</h2>
-      <button onClick={() => login()}>Sign in with Google</button>
+      <button className='loginButton' onClick={() => login()}>Sign in with Google</button>
     </div>
   );
 };
