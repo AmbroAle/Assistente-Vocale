@@ -4,11 +4,9 @@ const Dashboard = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
-  // Simula l'invio del messaggio e la risposta dell'IA
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    // Aggiunge il messaggio dell'utente
     const newMessages = [...messages, { sender: "user", text: input }];
     setMessages(newMessages);
     setInput("");
@@ -32,7 +30,6 @@ const Dashboard = () => {
   return (
     <>
         <div className="chat-window">
-          {/* Chat Window */}
           <div className="all-texts-window">
             {messages.map((msg) => (
               <div className="text-window">
@@ -42,7 +39,6 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-        {/* Input */}
         <div className="input-window">
             <input
               className="input-text"
