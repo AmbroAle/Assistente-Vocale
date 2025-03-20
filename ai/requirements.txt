@@ -6,3 +6,4 @@ pydub
 llama-cpp-python
 ollama
 google-auth
+-qU langchain-community

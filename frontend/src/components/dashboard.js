@@ -20,8 +20,7 @@ const Dashboard = () => {
 
       const data = await response.json();
 
-      // Aggiunge la risposta dell'IA
-      setMessages((prev) => [...prev, { sender: "ai", text: data.reply }]);
+      setMessages((prev) => [...prev, { sender: "ai", text: JSON.stringify(data) }]);
     } catch (error) {
       console.error("Errore nella comunicazione con l'IA:", error);
     }
