@@ -19,7 +19,8 @@ class VectorDB :
             documents.append(Document(page_content = text))
 
         self.vectorStore.add_documents(documents, id = str(uuid4()))
-        print(self.vectorStore)
+        result = self.vectorStore.similarity_search("non mi ricordo il progetto su un assistente vocale", k = 1)
+        print(result)
 
 vectordb = VectorDB()
 vectordb.addAllDoucments()

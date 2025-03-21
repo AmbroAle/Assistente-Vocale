@@ -1,7 +1,6 @@
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router';
-
 const Login = () => {
   const navigate = useNavigate();
   const login = useGoogleLogin({
@@ -10,10 +9,9 @@ const Login = () => {
       console.log('Authorization Code:', response.code);
 
       try {
-        const CLIENT_ID = "546923409832-2cva7ifqqri4bmidqssco9esd206gqmf.apps.googleusercontent.com";
-        const CLIENT_SECRET = ;
-        const REDIRECT_URI = "http://localhost:3000";
-        
+        const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+        const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
+        const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
         const params = new URLSearchParams();
         params.append('code', response.code);
         params.append('client_id', CLIENT_ID);
