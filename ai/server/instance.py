@@ -2,6 +2,8 @@ from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from rag.llamaRag import LlamaRAG
+from rag.vectorDatabase import VectorDB
 
 class UserInput(BaseModel):
     message: str
@@ -19,14 +21,12 @@ class Server:
         allow_headers=["*"],  
 )
         self.setup_routes()
+        self.llm = LlamaRAG()
 
     def setup_routes(self):
         @self.app.post("/chat")
         async def chat_with_ai(user_input : UserInput):
-            user_message = user_input.message
-            print("Dati ricevuti:", user_input.message)
-            ai_response = f"AI: Ho ricevuto il tuo messaggio: {user_message}"
-            return {"reply": ai_response}
+           return self.llm.generateResponse(user_input.message)
 
     def run(self):
         uvicorn.run(self.app, host="0.0.0.0", port=self.port)

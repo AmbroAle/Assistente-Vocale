@@ -3,7 +3,7 @@ import os
 
 class GoogleDocument:
     def __init__(self):
-        self.pathToSave = "../files/google_docs_output.json"
+        self.pathToSave = "files/google_docs_output.json"
 
     
     def getDocuments(self):
