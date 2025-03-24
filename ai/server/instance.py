@@ -3,7 +3,8 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from rag.llamaRag import LlamaRAG
-from rag.vectorDatabase import VectorDB
+from fastapi.responses import StreamingResponse
+
 
 class UserInput(BaseModel):
     message: str

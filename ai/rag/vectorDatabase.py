@@ -25,7 +25,7 @@ class VectorDB :
         res = None
         for text, score in result:
             print(f"Punteggio di similarità: {score}") 
-            if 0.6 <= score <= 1:
+            if 0.3 <= score <= 1:
                 res = text.page_content
 
         if res:
