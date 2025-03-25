@@ -3,24 +3,33 @@ from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from .vectorDatabase import VectorDB
 import time
+from datetime import datetime
 
 class LlamaRAG:
+    llm_instance = ChatOllama(model="llama3:latest", temperature=0.6, num_ctx= 2048)
+
+    prompt = PromptTemplate(
+        template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+        Cutting Knowledge Date: December 2023
+        Today Date: {today_date}
+
+        Sei un assistente utile e preciso. Usa i documenti forniti per rispondere con accuratezza.
+        Se i documenti non contengono la risposta, basati sulla tua conoscenza.
+        Rispondi solo in italiano.<|eot_id|>
+
+        <|start_header_id|>user<|end_header_id|>
+        Domanda: {question}
+        Documenti: {documents}<|eot_id|>
+
+        <|start_header_id|>assistant<|end_header_id|>
+        """,
+        input_variables=["question", "documents", "today_date"],
+    )
+    rag_chain_instance = prompt | llm_instance | StrOutputParser()
+    retriever = VectorDB()
+
     def __init__(self):
-        self.retriever = VectorDB()
-        self.retriever.addAllDocuments()
-        self.prompt = PromptTemplate(
-            template="""sei un assistente personale. Se ti vengono forniti dei documenti usali per
-            rispondere con risposte precise. Altrimenti rispondi con la tua conoscenza. Le risposte devono essere in italiano:
-            
-            Question: {question}
-            Documents: {documents}
-            Answer:
-            """,
-            input_variables=["question", "documents"],
-        )
-        
-        self.llm = ChatOllama(model="llama3:latest", temperature=0, num_predict=150)
-        self.rag_chain = self.prompt | self.llm | StrOutputParser()
+        LlamaRAG.retriever.addAllDocuments()
 
     def generateResponse(self, query):
         start_time = time.time()
@@ -28,16 +37,14 @@ class LlamaRAG:
         mid_time = time.time()
         print(f"Tempo per la ricerca: {mid_time - start_time:.2f} secondi")
 
-        if not documents:
-            prompt_input = {"question": query, "documents": "Nessun documento rilevante trovato."}
-        else:
-            prompt_input = {"question": query, "documents": documents}
+        prompt_input = {
+            "question": query,
+            "documents": documents if documents else "Nessun documento rilevante trovato.",
+            "today_date": datetime.today().strftime('%Y-%m-%d')
+        }
 
-        response = self.rag_chain.invoke(prompt_input)
+        response = LlamaRAG.rag_chain_instance.invoke(prompt_input)
 
         end_time = time.time()
         print(f"Tempo totale: {end_time - start_time:.2f} secondi")
         return response
-    
-
-

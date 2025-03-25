@@ -26,8 +26,8 @@ const Dashboard = () => {
 
     const newMessages = [...messages, { sender: "user", text: input }];
     setMessages(newMessages);
-    setInput(""); // Resetta il campo di input
-    resetTranscript(); // Resetta la trascrizione
+    setInput("");
+    resetTranscript(); 
 
     try {
       const response = await fetch("http://localhost:5001/chat", {
