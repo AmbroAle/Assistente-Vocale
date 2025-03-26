@@ -11,6 +11,9 @@
 # production
 /build
 
+#model llm
+ai/model/
+
 # misc
 .DS_Store
 .env.local

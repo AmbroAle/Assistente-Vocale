@@ -4,12 +4,13 @@ from langchain_core.output_parsers import StrOutputParser
 from .vectorDatabase import VectorDB
 import time
 from datetime import datetime
+from llama_cpp import Llama
 
 class LlamaRAG:
-    llm_instance = ChatOllama(model="llama3:latest", temperature=0.6, num_ctx= 2048)
+    llm_instance = Llama(model_path="model/Llama-3.2-1B-Instruct-f16.gguf", n_gpu_layers=24, n_ctx=2048, verbose=True)
 
     prompt = PromptTemplate(
-        template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+        template="""<|start_header_id|>system<|end_header_id|>
         Cutting Knowledge Date: December 2023
         Today Date: {today_date}
 
@@ -43,8 +44,10 @@ class LlamaRAG:
             "today_date": datetime.today().strftime('%Y-%m-%d')
         }
 
-        response = LlamaRAG.rag_chain_instance.invoke(prompt_input)
+        formatted_prompt = LlamaRAG.prompt.format(**prompt_input)  
+        response_obj = LlamaRAG.llm_instance(formatted_prompt, max_tokens=512)  
+        response_text = response_obj["choices"][0]["text"].strip()
 
         end_time = time.time()
         print(f"Tempo totale: {end_time - start_time:.2f} secondi")
-        return response
+        return response_text
