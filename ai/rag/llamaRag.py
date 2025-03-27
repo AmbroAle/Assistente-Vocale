@@ -14,8 +14,8 @@ class LlamaRAG:
         Cutting Knowledge Date: December 2023
         Today Date: {today_date}
 
-        Sei un assistente utile e preciso. Usa i documenti forniti per rispondere con accuratezza.
-        Se i documenti non contengono la risposta, basati sulla tua conoscenza.
+        Sei un assistente utile e preciso. Usa  i documenti forniti per rispondere con accuratezza.
+        Se i documenti non contengono la risposta o non sono disponibili, basati sulla tua conoscenza.
         Rispondi solo in italiano.<|eot_id|>
 
         <|start_header_id|>user<|end_header_id|>
@@ -26,7 +26,7 @@ class LlamaRAG:
         """,
         input_variables=["question", "documents", "today_date"],
     )
-    rag_chain_instance = prompt | llm_instance | StrOutputParser()
+    
     retriever = VectorDB()
 
     def __init__(self):
@@ -45,7 +45,7 @@ class LlamaRAG:
         }
 
         formatted_prompt = LlamaRAG.prompt.format(**prompt_input)  
-        response_obj = LlamaRAG.llm_instance(formatted_prompt, max_tokens=512)  
+        response_obj = LlamaRAG.llm_instance(formatted_prompt, max_tokens=1024)  
         response_text = response_obj["choices"][0]["text"].strip()
 
         end_time = time.time()

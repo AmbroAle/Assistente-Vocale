@@ -44,18 +44,15 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <div className="chat-window">
-        <div className="all-texts-window">
+    <main>
+        <ul className="chat-window">
           {messages.map((msg, index) => (
-            <div key={index} className="text-window">
-              <strong>{msg.sender === "user" ? "Tu" : "IA"}: </strong>
-              {msg.text}
-            </div>
+            <li key={index} className="text-window">
+              <span className="text-sender">{msg.sender === "user" ? "Tu" : "IA"}:</span>{msg.text}
+            </li>
           ))}
-        </div>
-      </div>
-      <div className="input-window">
+        </ul>
+      <form onSubmit={(e) => { e.preventDefault() ; sendMessage() }} className="input-window">
         <input
           className="input-text"
           type="text"
@@ -63,12 +60,13 @@ const Dashboard = () => {
           value={transcript || input} 
           onChange={(e) => setInput(e.target.value)}
         />
-        <button onClick={SpeechRecognition.startListening}>🎤 Start</button>
-        <button onClick={SpeechRecognition.stopListening}>⏹ Stop</button>
-        <button onClick={resetTranscript}>🔄 Reset</button>
-        <button className="input-button" onClick={sendMessage}>Invia</button>
-      </div>
-    </>
+        <div className="button-window">
+          <input type="button" className="input-button"onClick={SpeechRecognition.startListening} value={"🎙️ start"}/>
+          <input type="button" className="input-button" onClick={SpeechRecognition.stopListening} value={"⏹ Stop"} />
+          <input type="reset" className="input-button" onClick={() => {resetTranscript();setInput("")}} value={"🔄 Reset"}/>
+        </div>
+      </form>
+    </main>
   );
 };
 

@@ -1,5 +1,6 @@
 import json
 import os
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 class GoogleDocument:
     def __init__(self):
@@ -15,3 +16,15 @@ class GoogleDocument:
                 for elem in data :
                     result.append(elem['text'])
                 return result
+            
+    def getSplitText(self, list : list):
+        for doc in list:
+            text_splitters = RecursiveCharacterTextSplitter(
+                chunk_size = 1000,
+                chunk_overlap = 80,
+                length_function = len,
+                is_separator_regex=False
+            )
+        texts = text_splitters.create_documents(list)
+        return texts
+    

@@ -49,10 +49,12 @@ const Login = () => {
   });
   
   return (
-    <div className="login-container">
+    <main>
+      <section className="login-container">
       <h2>Login with Google</h2>
-      <button className='loginButton' onClick={() => login()}>Sign in with Google</button>
-    </div>
+      <button className='input-button' onClick={() => login()}>Sign in with Google</button>
+    </section>
+    </main>
   );
 };
 

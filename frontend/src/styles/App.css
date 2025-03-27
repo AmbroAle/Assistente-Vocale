@@ -1,58 +1,38 @@
-.App {
-  text-align: center;
+ul{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  list-style-position: inside;
 }
 
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+main {
   display: flex;
   flex-direction: column;
+  gap: 30px;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-#root {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  min-height: max-content;
 }
 
 .login-container {
-  display: inline-block;
-  text-align: center;
-  width: 50%;
+  display: flex;
+  flex-direction: column;
   border: 2px solid black;
-  border-radius: 15px;
-  padding: 5%;
-  margin-bottom: 5%;
-}
-
-.login-container > h2 {
-  margin-bottom: 5%;
-  margin-top: 10px;
-}
-
-.loginButton {
-  border-radius: 15px;
-  padding: 5px;
-  background-color: white;
+  width: 50%;
+  border-radius: 10px;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  height: 300px;
+  
 }
 
 .logo {
-  width: 2%;
+  width: 25px;
 }
 
 .header {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
+  
   width: 100%;
 }
 
@@ -71,19 +51,21 @@
 .footer {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
+  gap: 5px;
   width: 100%;
   margin-top: 3%;
+  position: fixed;
+  bottom: 0;
 }
 
-.chat-window {
-  border: 2px, solid , black;
+.chat-window{
+  border: solid 2px black;
   border-radius: 10px;
-  padding: 2%;
+  height: 50vh;
   width: 80%;
-  max-height: 50vh;
-  overflow-y: auto;
 }
 
 .text-window {
@@ -92,4 +74,48 @@
   padding: 5px;
   margin: 5px;
   word-wrap: break-word;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.text-sender{
+  font-weight: bold;
+}
+
+.input-button {
+  background-color: black;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  border: solid 2px black;
+  transition: color, background-color;
+}
+
+.input-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.input-text {
+  border-radius:  10px;
+  border-color: black;
+  padding: 5px;
+  width: 50%;
+  height: 40px;
+  text-align: center;
+}
+
+.button-window {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.input-window{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }

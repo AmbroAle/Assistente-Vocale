@@ -12,7 +12,7 @@
 /build
 
 #model llm
-ai/model/
+../ai/model/
 
 # misc
 .DS_Store
