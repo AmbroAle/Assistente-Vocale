@@ -1,35 +1,28 @@
-version: "3.9"
 services:
   backend:
     build: ./backend
     ports:
       - "8000:8000"
-    depends_on:
-      - mysql
-      - rabbitmq
+
+    volumes:
+      - ./ai/files:/ai/files
+
+    command: ["npm", "run", "dev"]
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - backend
+      - python-service
+    command: ["npm", "start"]
 
-  mysql:
-    build: ./repository
+  python-service:
+    build: ./ai
     ports:
-      - "3306:3306"
-    volumes:
-      - ./repository:/docker-entrypoint-initdb.d
-    environment:
-      MYSQL_ROOT_PASSWORD: latteforte
-      MYSQL_DATABASE: assistente
+      - "5001:5001"
 
-  rabbitmq:
-    image: "rabbitmq:latest"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+    command: ["python", "main.py"]
 
-volumes:
-  mysql_data:
+  

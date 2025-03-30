@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import Markdown from 'react-markdown'
 
 const Dashboard = () => {
   const [messages, setMessages] = useState([]);
@@ -48,7 +49,7 @@ const Dashboard = () => {
         <ul className="chat-window">
           {messages.map((msg, index) => (
             <li key={index} className="text-window">
-              <span className="text-sender">{msg.sender === "user" ? "Tu" : "IA"}:</span>{msg.text}
+              <span className="text-sender">{msg.sender === "user" ? "Tu" : "IA"}:</span><Markdown>{msg.text}</Markdown>
             </li>
           ))}
         </ul>

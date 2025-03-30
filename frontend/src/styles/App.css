@@ -66,6 +66,7 @@ main {
   border-radius: 10px;
   height: 50vh;
   width: 80%;
+  overflow-y: auto;
 }
 
 .text-window {
@@ -75,8 +76,12 @@ main {
   margin: 5px;
   word-wrap: break-word;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
+}
+
+.text-window  *{
+  overflow-x: scroll;
 }
 
 .text-sender{

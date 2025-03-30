@@ -1,13 +1,11 @@
-from langchain_ollama import ChatOllama
 from langchain.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 from .vectorDatabase import VectorDB
 import time
 from datetime import datetime
 from llama_cpp import Llama
 
 class LlamaRAG:
-    llm_instance = Llama(model_path="model/Llama-3.2-1B-Instruct-f16.gguf", n_gpu_layers=24, n_ctx=2048, verbose=True)
+    llm_instance = Llama(model_path="model/Llama-3.2-1B-Instruct-f16.gguf", n_gpu_layers=24, n_ctx=4000, verbose=True)
 
     prompt = PromptTemplate(
         template="""<|start_header_id|>system<|end_header_id|>
@@ -15,7 +13,7 @@ class LlamaRAG:
         Today Date: {today_date}
 
         Sei un assistente utile e preciso. Usa  i documenti forniti per rispondere con accuratezza.
-        Se i documenti non contengono la risposta o non sono disponibili, basati sulla tua conoscenza.
+        Se i documenti  non sono disponibili, basati sulla tua conoscenza.
         Rispondi solo in italiano.<|eot_id|>
 
         <|start_header_id|>user<|end_header_id|>
@@ -40,12 +38,12 @@ class LlamaRAG:
 
         prompt_input = {
             "question": query,
-            "documents": documents if documents else "Nessun documento rilevante trovato.",
+            "documents":"\n\n".join(doc.page_content if hasattr(doc, 'page_content') else doc for doc in documents) if documents    else "Nessun documento rilevante trovato.",
             "today_date": datetime.today().strftime('%Y-%m-%d')
         }
-
-        formatted_prompt = LlamaRAG.prompt.format(**prompt_input)  
-        response_obj = LlamaRAG.llm_instance(formatted_prompt, max_tokens=1024)  
+        formatted_prompt = LlamaRAG.prompt.format(**prompt_input) 
+        print(formatted_prompt)
+        response_obj = LlamaRAG.llm_instance(formatted_prompt, max_tokens=3000)  
         response_text = response_obj["choices"][0]["text"].strip()
 
         end_time = time.time()

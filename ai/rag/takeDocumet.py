@@ -18,13 +18,12 @@ class GoogleDocument:
                 return result
             
     def getSplitText(self, list : list):
-        for doc in list:
-            text_splitters = RecursiveCharacterTextSplitter(
-                chunk_size = 1000,
-                chunk_overlap = 80,
+        text_splitters = RecursiveCharacterTextSplitter(
+                chunk_size = 5000,
+                chunk_overlap = 600,
                 length_function = len,
                 is_separator_regex=False
             )
         texts = text_splitters.create_documents(list)
-        return texts
+        return texts 
     

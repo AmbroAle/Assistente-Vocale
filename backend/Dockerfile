@@ -1,6 +1,8 @@
-FROM python:3.11.5
+FROM node:22.14.0-alpine
 WORKDIR /app
+COPY package*.json ./
+RUN npm install
+RUN mkdir -p /ai/files && touch /ai/files/google_docs_output.json
 COPY . /app
-RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8000
-CMD ["python", "main.py"]
+CMD ["npm", "run", "dev"]

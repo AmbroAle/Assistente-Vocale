@@ -1,9 +1,12 @@
 fastapi
 uvicorn
-torch 
-openai 
-pydub
+pydantic
+langchain
+langchain_huggingface
+faiss-cpu
+langchain-community
+diskcache
+jinja2
+numpy
+typing-extensions
 llama-cpp-python
-ollama
-google-auth
--qU langchain-community
